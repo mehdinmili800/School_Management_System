@@ -34,14 +34,16 @@ public class UserServiceImpl implements UserService {
         user.setRole(createUserDTO.getRole());
 
         User savedUser = userRepository.save(user);
-        return new UserDTO(savedUser.getUserId(), savedUser.getEmail(), savedUser.getRole());
+        return new UserDTO(savedUser.getUserId(),savedUser.getUsername(),
+                savedUser.getEmail(),savedUser.getPhone_number(), savedUser.getRole());
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
-        return new UserDTO(user.getUserId(), user.getEmail(), user.getRole());
+        return new UserDTO(user.getUserId(),user.getUsername(),
+                user.getEmail(),user.getPhone_number(), user.getRole());
     }
 
     @Override
@@ -62,7 +64,8 @@ public class UserServiceImpl implements UserService {
         // Do not update the password unless explicitly required
 
         User updatedUser = userRepository.save(existingUser);
-        return new UserDTO(updatedUser.getUserId(), updatedUser.getEmail(), updatedUser.getRole());
+        return new UserDTO(updatedUser.getUserId(),updatedUser.getUsername(),
+                updatedUser.getEmail(),updatedUser.getPhone_number(), updatedUser.getRole());
     }
 
     @Override

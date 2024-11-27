@@ -1,11 +1,11 @@
 package com.example.school_management_system.repository;
 
-import com.example.school_management_system.entity.Student;
+
+import com.example.school_management_system.entity.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface ClassRepository extends JpaRepository<Class, Long> {
 
 }

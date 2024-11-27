@@ -3,9 +3,11 @@ package com.example.school_management_system.service.service_Impl;
 
 import com.example.school_management_system.dto.StudentDTO;
 import com.example.school_management_system.dto.request.CreateStudentDTO;
+import com.example.school_management_system.entity.Class;
 import com.example.school_management_system.entity.Student;
 import com.example.school_management_system.entity.User;
 import com.example.school_management_system.mapper.StudentMapper;
+import com.example.school_management_system.repository.ClassRepository;
 import com.example.school_management_system.repository.StudentRepository;
 import com.example.school_management_system.repository.UserRepository;
 import com.example.school_management_system.service.StudentService;
@@ -20,29 +22,38 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;;
+    private final ClassRepository classRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, ClassRepository classRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
+        this.classRepository = classRepository;
     }
 
     @Override
     public StudentDTO createStudent(CreateStudentDTO createStudentDTO) {
-        // Fetch User
+        // تحقق من وجود المستخدم
         User user = userRepository.findById(createStudentDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + createStudentDTO.getUserId()));
 
+        // تحقق من وجود الفصل الدراسي
+        Class classEntity = classRepository.findById(createStudentDTO.getClassId())
+                .orElseThrow(() -> new RuntimeException("Class not found with ID: " + createStudentDTO.getClassId()));
 
-        // Create and Save Student
+        // إنشاء الطالب
         Student student = new Student();
         student.setUser(user);
+        student.setAClass(classEntity);
 
+        // حفظ الطالب
         Student savedStudent = studentRepository.save(student);
 
-        // Convert to DTO
+        // تحويل إلى DTO وإعادته
         return StudentMapper.toDTO(savedStudent);
     }
+
+
     @Override
     public StudentDTO getStudentById(Long studentId) {
         Student student = studentRepository.findById(studentId)

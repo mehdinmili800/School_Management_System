@@ -2,6 +2,7 @@ package com.example.school_management_system.controller;
 
 import com.example.school_management_system.config.JwtUtils;
 import com.example.school_management_system.dto.request.CreateUserDTO;
+import com.example.school_management_system.dto.request.LoginRequestDTO;
 import com.example.school_management_system.dto.response.LoginUserDTO;
 import com.example.school_management_system.entity.User;
 import com.example.school_management_system.repository.UserRepository;
@@ -45,8 +46,10 @@ public class AuthController {
         }
 
         User user = new User();
+        user.setUsername(createUserDTO.getUsername());
         user.setEmail(createUserDTO.getEmail());
         user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        user.setPhone_number(createUserDTO.getPhone_number());
         user.setRole(createUserDTO.getRole());
 
         userRepository.save(user);
@@ -56,7 +59,7 @@ public class AuthController {
 
     // User Login
     @PostMapping("/login")
-    public LoginUserDTO login(@Valid @RequestBody CreateUserDTO loginRequest) {
+    public LoginUserDTO login(@Valid @RequestBody LoginRequestDTO loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 

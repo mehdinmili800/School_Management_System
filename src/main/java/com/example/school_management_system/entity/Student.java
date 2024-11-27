@@ -19,6 +19,10 @@ public class Student {
     @JoinColumn(name = "user_id", nullable = false) // Foreign Key to Users
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "class_id",nullable = false) // foreign Key to Classes
+    private Class aClass;
+
 }
 
 

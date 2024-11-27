@@ -10,6 +10,7 @@ public class StudentMapper {
         StudentDTO dto = new StudentDTO();
         dto.setStudentId(student.getStudentId());
         dto.setUserId(student.getUser().getUserId());
+        dto.setClassId(student.getAClass().getClassId());
         return dto;
     }
 
