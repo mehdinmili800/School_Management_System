@@ -23,6 +23,8 @@ public class Student {
     @JoinColumn(name = "class_id",nullable = false) // foreign Key to Classes
     private Class aClass;
 
+
+
 }
 
 
