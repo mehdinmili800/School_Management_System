@@ -25,4 +25,6 @@ public class Class {
 
     @OneToMany(mappedBy = "aClass", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Student> students;
+
+
 }
