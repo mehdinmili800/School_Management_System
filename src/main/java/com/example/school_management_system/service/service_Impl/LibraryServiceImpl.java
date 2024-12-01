@@ -3,7 +3,7 @@ package com.example.school_management_system.service.service_Impl;
 
 import com.example.school_management_system.dto.LibraryDTO;
 import com.example.school_management_system.entity.Library;
-import com.example.school_management_system.entity.LibraryMapper;
+import com.example.school_management_system.mapper.LibraryMapper;
 import com.example.school_management_system.repository.LibraryRepository;
 import com.example.school_management_system.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;

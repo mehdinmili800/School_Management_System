@@ -1,6 +1,7 @@
-package com.example.school_management_system.entity;
+package com.example.school_management_system.mapper;
 
 import com.example.school_management_system.dto.LibraryDTO;
+import com.example.school_management_system.entity.Library;
 
 public class LibraryMapper {
 
