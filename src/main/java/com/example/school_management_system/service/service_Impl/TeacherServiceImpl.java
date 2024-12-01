@@ -2,6 +2,7 @@ package com.example.school_management_system.service.service_Impl;
 
 import com.example.school_management_system.dto.TeacherDTO;
 import com.example.school_management_system.dto.request.CreateTeacherDTO;
+import com.example.school_management_system.entity.Role;
 import com.example.school_management_system.entity.Subject;
 import com.example.school_management_system.entity.Teacher;
 import com.example.school_management_system.entity.User;
@@ -35,6 +36,10 @@ public class TeacherServiceImpl implements TeacherService {
         User user = userRepository.findById(createTeacherDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + createTeacherDTO.getUserId()));
 
+        if (!user.getRole().equals(Role.TEACHER)) {
+            throw new RuntimeException("User role must be TEACHER to assign a subject");
+        }
+
         Subject subject = subjectRepository.findById(createTeacherDTO.getSubjectId())
                 .orElseThrow(() -> new RuntimeException("Subject not found with ID: " + createTeacherDTO.getSubjectId()));
 
@@ -45,6 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher savedTeacher = teacherRepository.save(teacher);
         return TeacherMapper.toDTO(savedTeacher);
     }
+
 
     @Override
     public TeacherDTO getTeacherById(Long id) {

@@ -4,6 +4,7 @@ package com.example.school_management_system.service.service_Impl;
 import com.example.school_management_system.dto.StudentDTO;
 import com.example.school_management_system.dto.request.CreateStudentDTO;
 import com.example.school_management_system.entity.Class;
+import com.example.school_management_system.entity.Role;
 import com.example.school_management_system.entity.Student;
 import com.example.school_management_system.entity.User;
 import com.example.school_management_system.mapper.StudentMapper;
@@ -33,25 +34,24 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO createStudent(CreateStudentDTO createStudentDTO) {
-        // تحقق من وجود المستخدم
         User user = userRepository.findById(createStudentDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + createStudentDTO.getUserId()));
 
-        // تحقق من وجود الفصل الدراسي
-        Class classEntity = classRepository.findById(createStudentDTO.getClassId())
+        if (!user.getRole().equals(Role.STUDENT)) {
+            throw new RuntimeException("User role must be STUDENT to assign a class");
+        }
+
+        Class studentClass = classRepository.findById(createStudentDTO.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found with ID: " + createStudentDTO.getClassId()));
 
-        // إنشاء الطالب
         Student student = new Student();
         student.setUser(user);
-        student.setAClass(classEntity);
+        student.setAClass(studentClass);
 
-        // حفظ الطالب
         Student savedStudent = studentRepository.save(student);
-
-        // تحويل إلى DTO وإعادته
         return StudentMapper.toDTO(savedStudent);
     }
+
 
 
     @Override
