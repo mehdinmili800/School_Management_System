@@ -69,4 +69,20 @@ public class ControlServiceImpl implements ControlService {
         }
         controlRepository.deleteById(id);
     }
+
+    @Override
+    public List<ControlDTO> getGradesByStudentId(Long studentId) {
+        return controlRepository.findByStudent_StudentId(studentId)
+                .stream()
+                .map(ControlMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ControlDTO> getGradesByExamId(Long examId) {
+        return controlRepository.findByExam_ExamId(examId)
+                .stream()
+                .map(ControlMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

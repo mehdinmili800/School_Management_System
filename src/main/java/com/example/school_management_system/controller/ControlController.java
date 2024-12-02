@@ -48,4 +48,19 @@ public class ControlController {
         controlService.deleteControl(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/student/grades/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
+    public ResponseEntity<List<ControlDTO>> getGradesByStudent(@PathVariable Long id) {
+        List<ControlDTO> grades = controlService.getGradesByStudentId(id);
+        return ResponseEntity.ok(grades);
+    }
+
+    @GetMapping("/exam/grades/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<List<ControlDTO>> getGradesByExam(@PathVariable Long id) {
+        List<ControlDTO> grades = controlService.getGradesByExamId(id);
+        return ResponseEntity.ok(grades);
+    }
+
 }

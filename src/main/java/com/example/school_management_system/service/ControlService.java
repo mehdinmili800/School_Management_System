@@ -10,4 +10,6 @@ public interface ControlService {
     ControlDTO getControlById(Long id);
     List<ControlDTO> getAllControls();
     void deleteControl(Long id);
+    List<ControlDTO> getGradesByStudentId(Long studentId);
+    List<ControlDTO> getGradesByExamId(Long examId);
 }
