@@ -24,6 +24,10 @@ public class Student {
     private Class aClass;
 
 
+    @ManyToOne
+    @JoinColumn(name = "transport_id")
+    private Transport transport; // Transport assigned to the student
+
 
 }
 
