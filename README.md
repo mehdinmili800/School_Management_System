@@ -1,7 +1,7 @@
 
 # School Management System
 Access the application:
-- Default URL: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com/`
+- Default URL: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com`
 - Swagger API Documentation: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com/swagger-ui/index.html`
 
 ## How to Contribute
@@ -67,7 +67,7 @@ Before you begin, ensure you have the following installed:
    ```
 
 4. Access the application:
-   - Default URL: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com/`
+   - Default URL: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com
    - Swagger API Documentation: `https://schoolmanagementsystem-eddb89e8acba.herokuapp.com/swagger-ui/index.html`
 
 ## Configuration
