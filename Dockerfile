@@ -1,11 +1,11 @@
-# استخدم صورة JDK 17 الرسمية من Eclipse Temurin
+# استخدام صورة JDK 17 الأساسية
 FROM eclipse-temurin:17-jdk-alpine
 
-# تحديد المجلد الذي سيتم نسخ التطبيق فيه داخل الحاوية
-VOLUME /tmp
+# إعداد متغير البيئة لتحديد المنطقة الزمنية (اختياري)
+ENV TZ=UTC
 
-# نسخ ملف JAR الذي تم إنشاؤه من المشروع إلى داخل الحاوية
+# نسخ ملف JAR المترجم من المجلد target إلى داخل الحاوية
 COPY target/School_Management_System-0.0.1-SNAPSHOT.jar app.jar
 
-# تعيين نقطة الدخول للحاوية لتشغيل التطبيق
+# تحديد نقطة الدخول للحاوية وتشغيل التطبيق
 ENTRYPOINT ["java", "-jar", "/app.jar"]
