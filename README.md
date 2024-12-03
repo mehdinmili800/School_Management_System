@@ -1,8 +1,3 @@
-![GitHub stars](https://img.shields.io/github/stars/mahdi/frontend-project)
-![GitHub forks](https://img.shields.io/github/forks/mahdi/frontend-project)
-![GitHub issues](https://img.shields.io/github/issues/mahdi/frontend-project)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/mahdi/frontend-project)
-
 
 # School Management System
 
