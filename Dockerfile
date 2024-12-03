@@ -1,11 +1,8 @@
-# استخدام صورة JDK 17 الأساسية
+# استخدم صورة JDK 17 الرسمية
 FROM eclipse-temurin:17-jdk-alpine
 
-# إعداد متغير البيئة لتحديد المنطقة الزمنية (اختياري)
-ENV TZ=UTC
+# نسخ ملف JAR إلى داخل الحاوية
+COPY ./target/School_Management_System-0.0.1-SNAPSHOT.jar app.jar
 
-# نسخ ملف JAR المترجم من المجلد target إلى داخل الحاوية
-COPY target/School_Management_System-0.0.1-SNAPSHOT.jar app.jar
-
-# تحديد نقطة الدخول للحاوية وتشغيل التطبيق
+# تعيين نقطة الدخول للحاوية لتشغيل التطبيق
 ENTRYPOINT ["java", "-jar", "/app.jar"]
