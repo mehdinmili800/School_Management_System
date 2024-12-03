@@ -29,6 +29,6 @@ public class CreateUserDTO {
     @NotBlank(message = "Phone Number")
     private String phone_number;
 
-    @Schema(description = "Role of the user. Can be STUDENT, TEACHER, or ADMIN.", example = "STUDENT")
+    @Schema(description = "Role of the user. Can be STUDENT, TEACHER,", example = "STUDENT TEACHER")
     private Role role;
 }

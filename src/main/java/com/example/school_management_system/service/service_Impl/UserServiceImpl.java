@@ -2,6 +2,7 @@ package com.example.school_management_system.service.service_Impl;
 
 import com.example.school_management_system.dto.UserDTO;
 import com.example.school_management_system.dto.request.CreateUserDTO;
+import com.example.school_management_system.entity.Role;
 import com.example.school_management_system.entity.User;
 import com.example.school_management_system.mapper.UserMapper;
 import com.example.school_management_system.repository.UserRepository;
@@ -24,8 +25,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(CreateUserDTO createUserDTO) {
+        if (createUserDTO.getRole() == Role.ADMIN) {
+            throw new RuntimeException("Creating ADMIN accounts is not allowed via this method.");
+        }
+
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-            throw new RuntimeException("Username already exists");
+            throw new RuntimeException("Email already exists");
         }
 
         User user = new User();
@@ -34,9 +39,10 @@ public class UserServiceImpl implements UserService {
         user.setRole(createUserDTO.getRole());
 
         User savedUser = userRepository.save(user);
-        return new UserDTO(savedUser.getUserId(),savedUser.getUsername(),
-                savedUser.getEmail(),savedUser.getPhone_number(), savedUser.getRole());
+        return new UserDTO(savedUser.getUserId(), savedUser.getUsername(),
+                savedUser.getEmail(), savedUser.getPhone_number(), savedUser.getRole());
     }
+
 
     @Override
     public UserDTO getUserById(Long id) {

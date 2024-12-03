@@ -4,6 +4,7 @@ import com.example.school_management_system.config.JwtUtils;
 import com.example.school_management_system.dto.request.CreateUserDTO;
 import com.example.school_management_system.dto.request.LoginRequestDTO;
 import com.example.school_management_system.dto.response.LoginUserDTO;
+import com.example.school_management_system.entity.Role;
 import com.example.school_management_system.entity.User;
 import com.example.school_management_system.repository.UserRepository;
 import com.example.school_management_system.service.UserService;
@@ -45,27 +46,7 @@ public class AuthController {
 
 
 
-    @Operation(summary = "Register a new user", description = "This endpoint allows registering a new user with required information.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User registered successfully"),
-            @ApiResponse(responseCode = "400", description = "Email already exists")
-    })
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody CreateUserDTO createUserDTO) {
-        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
-        }
 
-        User user = new User();
-        user.setUsername(createUserDTO.getUsername());
-        user.setEmail(createUserDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-        user.setPhone_number(createUserDTO.getPhone_number());
-        user.setRole(createUserDTO.getRole());
-
-        userRepository.save(user);
-        return ResponseEntity.ok("User registered successfully");
-    }
 
     @Operation(summary = "Login user", description = "Authenticate user with email and password, and return a JWT token.")
     @ApiResponses(value = {

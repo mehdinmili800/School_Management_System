@@ -22,7 +22,7 @@ public class UserDTO {
     @Schema(description = "Phone number of the user", example = "+123456789")
     private String phone_number;
 
-    @Schema(description = "Role of the user", example = "ADMIN")
+    @Schema(description = "Role of the user", example = "STUDENT TEACHER")
     private Role role;
 
     public UserDTO(Long userId, String username, String email, String phone_number, Role role) {
