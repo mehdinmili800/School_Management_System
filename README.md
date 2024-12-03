@@ -1,6 +1,18 @@
 
 # School Management System
 
+## How to Contribute
+
+1. Fork this repository.
+2. Clone the repository to your local machine.
+3. Create a new branch for your feature/fix.
+4. Write your code following the coding standards.
+5. Commit your changes and push them to your forked repository.
+6. Submit a Pull Request with a clear description of your changes.
+
+Please make sure your code passes all tests before submitting a PR!
+
+
 ## Project Overview
 
 The **School Management System** is a comprehensive application built using Java and Spring Boot. It is designed to manage school operations efficiently, including student management, teacher assignments, and class scheduling. This project is modular, scalable, and follows best coding practices.
@@ -91,3 +103,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ---
 
 Feel free to customize this `README.md` file further as per your project's needs.
+
+
+
+
