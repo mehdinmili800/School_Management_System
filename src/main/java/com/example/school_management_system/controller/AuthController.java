@@ -8,6 +8,10 @@ import com.example.school_management_system.entity.User;
 import com.example.school_management_system.repository.UserRepository;
 import com.example.school_management_system.service.UserService;
 import com.example.school_management_system.service.email.EmailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication", description = "Endpoints for user authentication and registration. These endpoints are open and do not require authentication.")
 public class AuthController {
 
     private final UserService userService;
@@ -38,11 +43,17 @@ public class AuthController {
         this.emailService = emailService;
     }
 
-    // User Registration
+
+
+    @Operation(summary = "Register a new user", description = "This endpoint allows registering a new user with required information.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Email already exists")
+    })
     @PostMapping("/register")
-    public String register(@RequestBody CreateUserDTO createUserDTO) {
+    public ResponseEntity<String> register(@RequestBody CreateUserDTO createUserDTO) {
         if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
         }
 
         User user = new User();
@@ -53,30 +64,38 @@ public class AuthController {
         user.setRole(createUserDTO.getRole());
 
         userRepository.save(user);
-        return "User registered successfully";
+        return ResponseEntity.ok("User registered successfully");
     }
 
-
-    // User Login
+    @Operation(summary = "Login user", description = "Authenticate user with email and password, and return a JWT token.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in successfully"),
+            @ApiResponse(responseCode = "401", description = "Invalid email or password")
+    })
     @PostMapping("/login")
-    public LoginUserDTO login(@Valid @RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<LoginUserDTO> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         String token = jwtUtils.generateToken(user.getEmail(), List.of(user.getRole().name()));
 
-        return new LoginUserDTO(token, user.getEmail(), user.getRole());
+        return ResponseEntity.ok(new LoginUserDTO(token, user.getEmail(), user.getRole()));
     }
 
+    @Operation(summary = "Refresh token", description = "Generate a new JWT token based on an existing valid token.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Token refreshed successfully"),
+            @ApiResponse(responseCode = "401", description = "Invalid or expired token")
+    })
     @PostMapping("/refresh-token")
     public ResponseEntity<LoginUserDTO> refreshToken(@RequestHeader("Authorization") String oldToken) {
         String token = oldToken.replace("Bearer ", "");
         if (!jwtUtils.validateToken(token)) {
-            throw new RuntimeException("Invalid or expired token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         String email = jwtUtils.extractEmail(token);
@@ -88,8 +107,11 @@ public class AuthController {
         return ResponseEntity.ok(new LoginUserDTO(newToken, user.getEmail(), user.getRole()));
     }
 
-
-
+    @Operation(summary = "Forgot password", description = "Send a password reset link to the user's email.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password reset link sent"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -98,11 +120,10 @@ public class AuthController {
         }
 
         User user = userOptional.get();
-        String resetToken = UUID.randomUUID().toString(); // Generate a unique token
-        user.setResetToken(resetToken); // تعيين رمز إعادة التعيين
+        String resetToken = UUID.randomUUID().toString();
+        user.setResetToken(resetToken);
         userRepository.save(user);
 
-        // Send email with the reset link
         String resetLink = "http://localhost:8080/auth/reset-password?token=" + resetToken;
         emailService.sendEmail(user.getEmail(), "Reset Password",
                 "Click the link to reset your password: " + resetLink);
@@ -110,6 +131,11 @@ public class AuthController {
         return ResponseEntity.ok("Password reset link sent to your email");
     }
 
+    @Operation(summary = "Reset password", description = "Reset user's password using a valid reset token.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password reset successfully"),
+            @ApiResponse(responseCode = "404", description = "Invalid or expired token")
+    })
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
         Optional<User> userOptional = userRepository.findByResetToken(token);
@@ -119,12 +145,9 @@ public class AuthController {
 
         User user = userOptional.get();
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setResetToken(null); // Invalidate the token after use
+        user.setResetToken(null);
         userRepository.save(user);
 
         return ResponseEntity.ok("Password reset successfully");
     }
-
-
-
 }
