@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         info = @Info(
                 title = "School Management System API",
                 version = "1.0",
-                description = "Admin : mehdi@gmail.com  n/ ///////// Password : mehdi"
+                description = "Admin : mehdi@gmail.com   /////////   Password : mehdi"
         )
 )
 public class SchoolManagementSystemApplication {
