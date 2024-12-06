@@ -107,6 +107,11 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 Feel free to customize this `README.md` file further as per your project's needs.
 
-
+spring_profiles_active=prod
+PROD_DB_HOST=postgres-6kjl.railway.internal
+PROD_DB_PORT=5432
+PROD_DB_NAME=railway
+PROD_DB_PASSWORD=hoiQVUbAalDCnmuUhMXlNhTeppsfsYiF
+PROD_DB_USERNAME=postgres
 
 
