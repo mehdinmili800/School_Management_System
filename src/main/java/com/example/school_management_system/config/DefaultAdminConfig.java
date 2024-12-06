@@ -22,7 +22,7 @@ public class DefaultAdminConfig {
     CommandLineRunner createDefaultAdmin() {
         return args -> {
             // بيانات المسؤول الافتراضي
-            String adminEmail = "mehdi800wa@gmail.com"; // يمكنك تغييره إذا أردت
+            String adminEmail = "mehdi@gmail.com"; // يمكنك تغييره إذا أردت
             String adminPassword = "mehdi"; // اجعلها كلمة مرور قوية
 
             // تحقق إذا كان الحساب موجودًا بالفعل
